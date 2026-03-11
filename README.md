@@ -36,6 +36,16 @@ cpjudge
 ```
 
 ---
+ ## Program Example
+<div align="center">
+
+<img src="screenshots/first.jpg" alt="CPJudge Screenshot 1" width="600" height="350">
+
+<br><br>
+
+<img src="screenshots/second.jpg" alt="CPJudge Screenshot 2" width="600" height="350">
+
+</div>
 
 ## Example Problem
 
