@@ -43,7 +43,7 @@ cpjudge
 
 <br><br>
 
-<img src="screenshots/second.jpg" alt="CPJudge Screenshot 2" width="600" height="350">
+<img src="screenshots/second.jpg" alt="CPJudge Screenshot 2" width="450" height="400">
 
 </div>
 
