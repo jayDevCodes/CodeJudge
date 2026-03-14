@@ -53,6 +53,7 @@ int main() {
         if (config.count("program_path")) program_path = config["program_path"];
         if (config.count("input_folder")) input_folder = config["input_folder"];
         if (config.count("output_folder")) output_folder = config["output_folder"];
+        if (config.count("total_tests")) total_tests = stoi(config["total_tests"]);
     }
 
     if (program_name.empty()) { cout << "Program name:\n"; cin >> program_name; }
@@ -60,9 +61,10 @@ int main() {
     if (input_folder.empty()) { cout << "Input folder:\n"; cin >> input_folder; }
     if (output_folder.empty()) { cout << "Output folder:\n"; cin >> output_folder; }
     if (time_limit_sec == 0) { cout << "Time limit in seconds (0 = no limit):\n"; cin >> time_limit_sec; }
-
-    cout << "How many tests:\n";
-    cin >> total_tests;
+    if (!config.count("total_tests")) {
+        cout << "How many tests:\n";
+        cin >> total_tests;
+    }
 
     int passed = 0;
 
