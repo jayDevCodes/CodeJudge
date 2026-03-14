@@ -85,6 +85,7 @@ Compile the solution:
 ```bash
 #Macos
 g++ solution.cpp -o solution
+
 #Windows
 g++ solution.cpp -o solution.exe
 ```
@@ -94,6 +95,7 @@ Compile the judge:
 ```bash
 #Macos
 g++ cpjudge.cpp -o cpjudge
+
 #Windows
 g++ cpjudge.cpp -o cpjudge
 ```
