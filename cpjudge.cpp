@@ -1,50 +1,89 @@
-#include <cstdlib>
-#include <fstream>
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <cstdlib>
 #include <string>
+
+#include "color.h"
 
 using namespace std;
 
-string
-readFile (string path)
-{
-  ifstream file (path);
-  return string ((istreambuf_iterator<char> (file)),
-                 istreambuf_iterator<char> ());
+string readFile(const string &filename) {
+    ifstream file(filename);
+    stringstream buffer;
+    buffer << file.rdbuf();
+    return buffer.str();
 }
 
-int
-main ()
-{
-  int total = 2;
-  int passed = 0;
+bool compareOutput(const string &file1, const string &file2) {
+    string out1 = readFile(file1);
+    string out2 = readFile(file2);
 
-  for (int i = 1; i <= total; i++)
-    {
-#ifdef __APPLE__
-      string input = "tests/input" + to_string (i) + ".txt";
-      string cmd = "./solution < " + input + " > temp.txt";
-#elif _WIN32
-      string input = ".\\tests\\input" + to_string (i) + ".txt";
-      string cmd = "cmd /c \"solution.exe < " + input + " > temp.txt\"";
+    return out1 == out2;
+}
 
-#endif
-      string expected = "tests/output" + to_string (i) + ".txt";
+void runTest(int testNum, int &passed) {
 
-      system (cmd.c_str ());
+    string inputFile = "tests/input" + to_string(testNum) + ".txt";
+    string expectedFile = "tests/output" + to_string(testNum) + ".txt";
+    string outputFile = "temp_output.txt";
 
-      string out = readFile ("temp.txt");
-      string exp = readFile (expected);
+    string runCmd = "./solution < " + inputFile + " > " + outputFile;
+    system(runCmd.c_str());
 
-      if (out.find (exp) != string::npos)
-        {
-          cout << "\033[32mTest " << i << " PASSED\033[0m\n";
-          passed++;
-        }
-      else
-        {
-          cout << "\033[31mTest " << i << " FAILED\033[0m\n";
-        }
+    if (compareOutput(outputFile, expectedFile)) {
+        cout << "Test " << testNum << " "
+             << GREEN << "PASSED" << RESET << endl;
+        passed++;
+    } 
+    else {
+        cout << "Test " << testNum << " "
+             << RED << "FAILED" << RESET << endl;
     }
-  cout << "\nPassed " << passed << "/" << total << " tests\n";
+}
+
+int main() {
+
+    enableColors();
+
+    cout << YELLOW << "===== CodeJudge =====" << RESET << endl;
+
+    string sourceFile = "solution.cpp";
+
+    cout << "Compiling solution..." << endl;
+
+    string compileCmd = "g++ " + sourceFile + " -o solution";
+
+    if (system(compileCmd.c_str()) != 0) {
+        cout << RED << "Compilation Failed" << RESET << endl;
+        return 1;
+    }
+
+    cout << GREEN << "Compilation Successful" << RESET << endl;
+
+    int totalTests = 3;
+    int passed = 0;
+
+    cout << "\nRunning Tests...\n" << endl;
+
+    for (int i = 1; i <= totalTests; i++) {
+        runTest(i, passed);
+    }
+
+    cout << "\n========================\n";
+
+    if (passed == totalTests) {
+        cout << GREEN << "All Tests Passed "
+             << "(" << passed << "/" << totalTests << ")"
+             << RESET << endl;
+    } 
+    else {
+        cout << RED << "Tests Passed "
+             << "(" << passed << "/" << totalTests << ")"
+             << RESET << endl;
+    }
+
+    cout << "========================\n";
+
+    return 0;
 }
